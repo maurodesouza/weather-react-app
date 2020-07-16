@@ -1,5 +1,13 @@
 import React from 'react';
+import GlobalStyles from '@/styles/GlobalStyles';
 
-const App: React.FC = () => <h1>Hmm ... Hellow ?</h1>;
+import Layout from '@/components/Layout';
+
+const App: React.FC = () => (
+  <>
+    <Layout />
+    <GlobalStyles />
+  </>
+);
 
 export default App;
