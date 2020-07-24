@@ -1,5 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
+import '@brainhubeu/react-carousel/lib/style.css';
+
 export default createGlobalStyle`
   * {
     padding: 0;
@@ -18,22 +20,22 @@ export default createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     font-size: 1.6rem;
 
-    padding: 0 3rem 3rem;
+    padding: 0 3rem;
+    background: ${props => props.theme.colors.background};
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   body, html, #root {
-    max-height: 100vh;
-    max-width: 100vw;
-
-    width: 100%;
-    height: 100%;
+    min-height: 100vh;
   }
 
-  *, button, input {
-    border: 0;
-    background: none;
-    font-family: --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    color: var(--dark);
+  body, button, input {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    color: ${props => props.theme.colors.text};
   }
 
   button, a {
@@ -44,8 +46,8 @@ export default createGlobalStyle`
     cursor: text;
   }
 
-  :root {
-    --primary: #0ff;
-    --dark: #333;
+  button, input {
+    border: 0;
+    background: none;
   }
 `;

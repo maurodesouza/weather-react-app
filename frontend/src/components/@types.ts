@@ -1,28 +1,35 @@
-export interface Forecast {
-  list: WeatherForecast[];
-  city: City;
-}
+type Coord = {
+  lat: number;
+  lon: number;
+};
 
-export interface City {
-  name: string;
-}
+type Main = {
+  temp: number;
+};
 
-export interface WeatherForecast {
-  dt: number;
-  dt_txt: string;
-  weather: Weather[];
-  main: Main;
-}
-
-interface Weather {
+type WeatherInfo = {
   description: string;
   id: number;
-}
+};
 
-interface Main {
-  humidity: number;
-  temp: number;
-  temp_max: number;
-  temp_min: number;
-  feels_like: number;
-}
+type Temp = {
+  min: number;
+  max: number;
+};
+
+type ForecastDaily = {
+  dt: number;
+  temp: Temp;
+  weather: WeatherInfo[];
+};
+
+export type Weather = {
+  name: string;
+  coord: Coord;
+  main: Main;
+  weather: WeatherInfo[];
+};
+
+export type Forecast = {
+  daily: ForecastDaily[];
+};

@@ -1,34 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { ThemeContext } from 'styled-components';
+
+import Switch from 'react-switch';
 
 import Search from '@/components/Search';
-import Card from '@/components/Card';
+import Header from '@/components/Header';
+import Main from '@/components/Main';
+import Cards from '@/components/Cards';
 
-import { Forecast, WeatherForecast, City } from '@/components/@types';
+import { FaSun, FaMoon } from 'react-icons/fa';
+
+import { Weather, Forecast } from '@/components/@types';
 
 import api from '@/services/api';
+import image from '@/assets/img/weather.svg';
+
 import * as S from './styles';
 
-const Layout: React.FC = () => {
-  const [cityInfo, setCityInfo] = useState<City | undefined>(undefined);
+type Props = {
+  toggleTheme(): void;
+};
 
-  const [weatherForecasts, setWeatherForecasts] = useState<
-    WeatherForecast[] | undefined
-  >(undefined);
-  const [hasError, setHasError] = useState(false);
+const Layout: React.FC<Props> = ({ toggleTheme }) => {
+  const { colors, theme } = useContext(ThemeContext);
 
-  const get5DaysForecast = (forecast: Forecast): void => {
-    const fiveDaysWeatherForecast = forecast.list.filter(reading =>
-      reading.dt_txt.includes('12:00:00')
-    );
+  const [weather, setWeather] = useState<Weather | undefined>(undefined);
+  const [forecast, setForecast] = useState<Forecast | undefined>(undefined);
 
-    setWeatherForecasts(fiveDaysWeatherForecast);
-  };
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const [loading, setLoading] = useState(false);
 
   const fetchWeather = async (city: string): Promise<void> => {
-    setHasError(false);
+    setLoading(true);
+    setError(false);
 
     try {
-      const { data } = await api.get<Forecast>(`forecast`, {
+      const weatherResponse = await api.get<Weather>('weather', {
         params: {
           q: city,
           units: 'metric',
@@ -37,26 +46,72 @@ const Layout: React.FC = () => {
         },
       });
 
-      get5DaysForecast(data);
-      setCityInfo(data.city);
+      const forecastResponse = await api.get<Forecast>('onecall', {
+        params: {
+          lat: weatherResponse.data.coord.lat,
+          lon: weatherResponse.data.coord.lon,
+          exclude: 'current,hourly',
+          units: 'metric',
+          lang: 'pt_br',
+          appid: process.env.REACT_APP_WEATHER_KEY,
+        },
+      });
+
+      setWeather(weatherResponse.data);
+      setForecast(forecastResponse.data);
+      setLoading(false);
     } catch (err) {
-      if (err.response.data.cod === '404') setHasError(true);
+      setError(true);
+      setLoading(false);
+
+      if (err.response.data.cod === '404') {
+        setErrorMessage('Essa cidade não foi encontrada!');
+      }
+
+      if (err.response.data.cod === '429') {
+        setErrorMessage('Problemas com o servidor, volte mais tarde!');
+      }
     }
   };
 
   return (
     <S.Container>
-      <Search fetchWeather={fetchWeather} />
+      <S.ToggleThemeContainer>
+        <S.ToggleThemeWrapper>
+          <FaMoon size={20} color={colors.primary} />
+          <Switch
+            onChange={toggleTheme}
+            checked={theme === 'light'}
+            checkedIcon={false}
+            uncheckedIcon={false}
+            handleDiameter={20}
+            onColor={colors.footer}
+            offColor={colors.footer}
+            onHandleColor={colors.background}
+            offHandleColor={colors.primary}
+            activeBoxShadow="0px 0px 2px 3px rgba(255, 255, 255, 0.3)"
+            height={30}
+            width={50}
+          />
+          <FaSun size={20} color={colors.primary} />
+        </S.ToggleThemeWrapper>
+      </S.ToggleThemeContainer>
 
-      {hasError ? (
-        <S.ErrorMessage>Essa cidade não foi encontrada!</S.ErrorMessage>
+      <Search fetchWeather={fetchWeather} error={error} loading={loading} />
+
+      {error && <S.ErrorText>{errorMessage}</S.ErrorText>}
+
+      {weather && forecast ? (
+        <>
+          <Header city={weather?.name} />
+          <Main weather={weather} />
+          <Cards forecast={forecast} />
+          <S.Footer />
+        </>
       ) : (
-        <S.Cards>
-          <S.City>{cityInfo?.name}</S.City>
-          {weatherForecasts?.map(forecast => (
-            <Card key={forecast.dt} forecast={forecast} />
-          ))}
-        </S.Cards>
+        <S.ImgWrapper>
+          <S.Img src={image} alt="intro" />
+        </S.ImgWrapper>
       )}
     </S.Container>
   );

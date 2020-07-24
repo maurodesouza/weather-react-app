@@ -1,42 +1,48 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+type ContainerProps = {
+  error: boolean;
+};
+
+export const Container = styled.form<ContainerProps>`
   display: flex;
-  flex-direction: column;
   align-items: center;
-`;
 
-export const Title = styled.h1`
-  font-size: 4.8rem;
-`;
+  width: min(100%, 49rem);
+  margin: 2rem auto 0;
+  padding: 0 3rem;
 
-export const Form = styled.form`
-  width: 100%;
-  max-width: 40rem;
-  margin-top: 2rem;
-  position: relative;
+  height: 4.5rem;
+
+  border-radius: 5px;
+  box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.3);
+
+  transition: 0.4s;
+
+  border: 1px solid
+    ${props => (props.error ? props.theme.colors.error : 'transparent')};
+
+  :hover {
+    box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.5);
+  }
 `;
 
 export const Input = styled.input`
   width: 100%;
-  border: 0.2rem solid var(--dark);
-  padding: 1.5rem 3rem;
-  border-radius: 10rem;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
 `;
 
 export const SubmitButton = styled.button`
-  position: absolute;
-  top: 50%;
-  right: 1rem;
-  padding: 2rem;
-
-  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   > svg {
-    cursor: pointer;
     height: 3rem;
     width: 3rem;
-    color: var(--dark);
+  }
+
+  * {
+    cursor: pointer;
   }
 `;
