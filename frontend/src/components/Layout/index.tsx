@@ -16,6 +16,7 @@ import api from '@/services/api';
 import image from '@/assets/img/weather.svg';
 
 import * as S from './styles';
+import usePersistedState from '@/hook/usePersistedState';
 
 type Props = {
   toggleTheme(): void;
@@ -24,8 +25,8 @@ type Props = {
 const Layout: React.FC<Props> = ({ toggleTheme }) => {
   const { colors, theme } = useContext(ThemeContext);
 
-  const [weather, setWeather] = useState<Weather | undefined>(undefined);
-  const [forecast, setForecast] = useState<Forecast | undefined>(undefined);
+  const [weather, setWeather] = usePersistedState<Weather | undefined>('weather', undefined);
+  const [forecast, setForecast] = usePersistedState<Forecast | undefined>('forecast', undefined);
 
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
