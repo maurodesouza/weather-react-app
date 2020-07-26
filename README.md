@@ -2,6 +2,7 @@
   <img src="./.github/app.gif" alt="Weather React App" />
 
   &#xa0;
+
   <a href="https://simpleweatherreactapp.netlify.app">Demo</a>
 </div>
 
@@ -43,19 +44,20 @@ You can see the demo <a href="https://simpleweatherreactapp.netlify.app">here</a
 
 ## :sparkles: Features ##
 
-:heavy_check_mark: Show current weather;
-:heavy_check_mark: Show five days forecast;
-:heavy_check_mark: Dark and light mode;
+:heavy_check_mark: Show current weather;\
+:heavy_check_mark: Show five days forecast;\
+:heavy_check_mark: Dark and light mode;\
+:heavy_check_mark: Save theme and last search in localstorage;\
 :heavy_check_mark: Responsive app;
 
 ## :rocket: Technologies ##
 
-[React](https://pt-br.reactjs.org)
-[Axios](https://github.com/axios/axios)
-[Eslint](https://eslint.org)
-[Date-fns](https://date-fns.org)
-[Typescript](https://www.typescriptlang.org)
-[React switch](https://www.npmjs.com/package/react-switch)
+[React](https://pt-br.reactjs.org)\
+[Axios](https://github.com/axios/axios)\
+[Eslint](https://eslint.org)\
+[Date-fns](https://date-fns.org)\
+[Typescript](https://www.typescriptlang.org)\
+[React switch](https://www.npmjs.com/package/react-switch)\
 [Styled components](https://styled-components.com)
 
 ## :white_check_mark: Requirements ##
@@ -104,4 +106,5 @@ Made with :heart: Mauro de Souza
 </a>
 
 &#xa0;
+
 <a href="#top">Back to top</a>
